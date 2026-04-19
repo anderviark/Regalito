@@ -1,0 +1,735 @@
+<p>
+    &lt;!DOCTYPE html&gt;
+</p>
+<p>
+    &lt;html lang="es"&gt;
+</p>
+<p>
+    &lt;head&gt;
+</p>
+<p>
+    &lt;meta charset="UTF-8"&gt;
+</p>
+<p>
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"&gt;
+</p>
+<p>
+    &lt;title&gt;Un Regalo para Matecito 🌸&lt;/title&gt;
+</p>
+<p>
+    &lt;style&gt;
+</p>
+<p>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap');
+</p>
+<p>
+      @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&amp;display=swap');
+</p>
+<p>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+</p>
+<p>
+      body {
+</p>
+<p>
+        min-height: 100vh;
+</p>
+<p>
+        display: flex;
+</p>
+<p>
+        flex-direction: column;
+</p>
+<p>
+        align-items: center;
+</p>
+<p>
+        justify-content: center;
+</p>
+<p>
+        background: radial-gradient(ellipse at 60% 30%, #fff0f6 0%, #fde8d8 45%, #f5d5c5 100%);
+</p>
+<p>
+        font-family: 'Playfair Display', serif;
+</p>
+<p>
+        overflow: hidden;
+</p>
+<p>
+        touch-action: manipulation;
+</p>
+<p>
+        user-select: none;
+</p>
+<p>
+        -webkit-user-select: none;
+</p>
+<p>
+      }
+</p>
+<p>
+      body::before {
+</p>
+<p>
+        content: '';
+</p>
+<p>
+        position: fixed;
+</p>
+<p>
+        inset: 0;
+</p>
+<p>
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+</p>
+<p>
+        pointer-events: none;
+</p>
+<p>
+        z-index: 0;
+</p>
+<p>
+      }
+</p>
+<p>
+      .hud {
+</p>
+<p>
+        position: fixed;
+</p>
+<p>
+        top: 25px;
+</p>
+<p>
+        background: rgba(255,255,255,0.7);
+</p>
+<p>
+        backdrop-filter: blur(10px);
+</p>
+<p>
+        border: 1px solid rgba(255,180,200,0.3);
+</p>
+<p>
+        padding: 12px 25px;
+</p>
+<p>
+        border-radius: 50px;
+</p>
+<p>
+        color: #b04070;
+</p>
+<p>
+        z-index: 100;
+</p>
+<p>
+        box-shadow: 0 8px 30px rgba(180,60,110,0.15);
+</p>
+<p>
+        font-size: 1.1rem;
+</p>
+<p>
+        animation: fadeInDown 1.5s forwards;
+</p>
+<p>
+        opacity: 0;
+</p>
+<p>
+      }
+</p>
+<p>
+      .hud-count { font-weight: 700; color: #d04080; }
+</p>
+<p>
+      .scene {
+</p>
+<p>
+        position: relative;
+</p>
+<p>
+        width: 100%;
+</p>
+<p>
+        max-width: 500px;
+</p>
+<p>
+        height: 600px;
+</p>
+<p>
+        display: flex;
+</p>
+<p>
+        justify-content: center;
+</p>
+<p>
+        align-items: flex-end;
+</p>
+<p>
+        z-index: 10;
+</p>
+<p>
+      }
+</p>
+<p>
+      svg {
+</p>
+<p>
+        width: 100%;
+</p>
+<p>
+        height: 100%;
+</p>
+<p>
+        filter: drop-shadow(0 20px 50px rgba(180,60,110,0.2));
+</p>
+<p>
+      }
+</p>
+<p>
+      .petal-group {
+</p>
+<p>
+        cursor: pointer;
+</p>
+<p>
+        transition: filter 0.4s ease, transform 0.3s ease;
+</p>
+<p>
+        transform-origin: 250px 350px;
+</p>
+<p>
+        opacity: 0;
+</p>
+<p>
+        animation: bloomPetal 2s cubic-bezier(0.3, 1.3, 0.4, 1) forwards;
+</p>
+<p>
+      }
+</p>
+<p>
+      .petal-group:hover {
+</p>
+<p>
+        filter: brightness(1.15) drop-shadow(0 0 10px rgba(255,180,210,0.7));
+</p>
+<p>
+        transform: scale(1.02);
+</p>
+<p>
+      }
+</p>
+<p>
+      /* Física de vuelo mejorada */
+</p>
+<p>
+      .petal-fly {
+</p>
+<p>
+        animation: flyAway 1.2s forwards cubic-bezier(0.25, 1, 0.5, 1);
+</p>
+<p>
+        pointer-events: none;
+</p>
+<p>
+      }
+</p>
+<p>
+      @keyframes flyAway {
+</p>
+<p>
+        0% { transform: rotate(0deg) translate(0, 0); opacity: 1; }
+</p>
+<p>
+        30% { transform: rotate(var(--fr)) translate(calc(var(--fx) * 0.4), calc(var(--fy) * 0.4)) scale(1.1); opacity: 0.9; }
+</p>
+<p>
+        100% { transform: rotate(calc(var(--fr) * 2)) translate(var(--fx), var(--fy)) scale(0.6); opacity: 0; }
+</p>
+<p>
+      }
+</p>
+<p>
+      /* Animaciones de brote */
+</p>
+<p>
+      @keyframes bloomPetal {
+</p>
+<p>
+        from { opacity: 0; transform: scale(0.1) rotate(-15deg); }
+</p>
+<p>
+        to { opacity: 1; transform: scale(1) rotate(0deg); }
+</p>
+<p>
+      }
+</p>
+<p>
+      @keyframes growStem { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+</p>
+<p>
+      @keyframes bloomCenter { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+</p>
+<p>
+      @keyframes unfoldLeaf { from { opacity: 0; transform: scale(0) rotate(30deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+</p>
+<p>
+      @keyframes sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(1.5deg); } }
+</p>
+<p>
+      @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+</p>
+<p>
+      .stem-group {
+</p>
+<p>
+        animation: growStem 1.5s ease-out forwards;
+</p>
+<p>
+        transform-origin: 250px 550px;
+</p>
+<p>
+      }
+</p>
+<p>
+      .leaf-left { animation: unfoldLeaf 1s ease-out 1.2s forwards; transform-origin: 250px 480px; opacity: 0; }
+</p>
+<p>
+      .leaf-right { animation: unfoldLeaf 1s ease-out 1.4s forwards; transform-origin: 250px 500px; opacity: 0; }
+</p>
+<p>
+      .flower-head { animation: sway 8s ease-in-out infinite; transform-origin: 250px 550px; }
+</p>
+<p>
+      .center-group { animation: bloomCenter 2s ease-out 1s forwards; opacity: 0; transform-origin: 250px 350px; }
+</p>
+<p>
+      .final-msg {
+</p>
+<p>
+        position: fixed;
+</p>
+<p>
+        inset: 0;
+</p>
+<p>
+        background: rgba(255,245,245,0.95);
+</p>
+<p>
+        backdrop-filter: blur(15px);
+</p>
+<p>
+        display: none;
+</p>
+<p>
+        flex-direction: column;
+</p>
+<p>
+        align-items: center;
+</p>
+<p>
+        justify-content: center;
+</p>
+<p>
+        z-index: 1000;
+</p>
+<p>
+        text-align: center;
+</p>
+<p>
+        padding: 30px;
+</p>
+<p>
+      }
+</p>
+<p>
+      .final-msg.show { display: flex; animation: fadeIn 1s forwards; }
+</p>
+<p>
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</p>
+<p>
+      .msg-title {
+</p>
+<p>
+        font-family: 'Dancing Script', cursive;
+</p>
+<p>
+        font-size: 4rem;
+</p>
+<p>
+        color: #c03060;
+</p>
+<p>
+        text-shadow: 0 4px 15px rgba(200,80,120,0.3);
+</p>
+<p>
+        margin-bottom: 20px;
+</p>
+<p>
+        animation: heartbeat 2s infinite;
+</p>
+<p>
+      }
+</p>
+<p>
+      @keyframes heartbeat {
+</p>
+<p>
+        0%, 100% { transform: scale(1); }
+</p>
+<p>
+        50% { transform: scale(1.05); }
+</p>
+<p>
+      }
+</p>
+<p>
+      .msg-text { font-size: 1.3rem; color: #d06080; margin-bottom: 40px; font-style: italic; max-width: 500px; }
+</p>
+<p>
+      button {
+</p>
+<p>
+        padding: 15px 40px;
+</p>
+<p>
+        border: none;
+</p>
+<p>
+        background: linear-gradient(135deg, #f06090, #c03060);
+</p>
+<p>
+        color: white;
+</p>
+<p>
+        border-radius: 50px;
+</p>
+<p>
+        font-family: 'Playfair Display', serif;
+</p>
+<p>
+        font-size: 1.1rem;
+</p>
+<p>
+        font-weight: 700;
+</p>
+<p>
+        cursor: pointer;
+</p>
+<p>
+        box-shadow: 0 10px 30px rgba(240,96,144,0.4);
+</p>
+<p>
+        transition: transform 0.2s, box-shadow 0.2s;
+</p>
+<p>
+      }
+</p>
+<p>
+      button:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(240,96,144,0.5); }
+</p>
+<p>
+      button:active { transform: scale(0.98); }
+</p>
+<p>
+      #particles { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+</p>
+<p>
+    &lt;/style&gt;
+</p>
+<p>
+    &lt;/head&gt;
+</p>
+<p>
+    &lt;body&gt;
+</p>
+<p>
+    &lt;canvas id="particles"&gt;&lt;/canvas&gt;
+</p>
+<p>
+    &lt;div class="hud"&gt;🌸 Pétalos: &lt;span id="counter" class="hud-count"&gt;20&lt;/span&gt;&lt;/div&gt;
+</p>
+<p>
+    &lt;div class="scene"&gt;
+</p>
+<p>
+      &lt;svg viewBox="0 0 500 600"&gt;
+</p>
+<p>
+        &lt;defs&gt;
+</p>
+<p>
+          &lt;radialGradient id="grad1" cx="50%" cy="10%" r="90%"&gt;&lt;stop offset="0%" stop-color="#fff8fa"/&gt;&lt;stop offset="30%" stop-color="#fdc9de"/&gt;&lt;stop offset="100%" stop-color="#da67a3"/&gt;&lt;/radialGradient&gt;
+</p>
+<p>
+          &lt;radialGradient id="grad2" cx="50%" cy="10%" r="90%"&gt;&lt;stop offset="0%" stop-color="#fff0f6"/&gt;&lt;stop offset="40%" stop-color="#f8a5cb"/&gt;&lt;stop offset="100%" stop-color="#b03070"/&gt;&lt;/radialGradient&gt;
+</p>
+<p>
+          &lt;radialGradient id="gradCenter" cx="45%" cy="30%"&gt;&lt;stop offset="0%" stop-color="#fff0a0"/&gt;&lt;stop offset="50%" stop-color="#f5c030"/&gt;&lt;stop offset="100%" stop-color="#b87010"/&gt;&lt;/radialGradient&gt;
+</p>
+<p>
+          &lt;linearGradient id="gradLeaf" x1="0%" y1="0%" x2="100%" y2="100%"&gt;&lt;stop offset="0%" stop-color="#80c070"/&gt;&lt;stop offset="100%" stop-color="#2a6030"/&gt;&lt;/linearGradient&gt;
+</p>
+<p>
+          &lt;filter id="petalShadow"&gt;&lt;feGaussianBlur stdDeviation="3" result="blur"/&gt;&lt;feOffset dx="2" dy="5" in="blur" result="offsetBlur"/&gt;&lt;feMerge&gt;&lt;feMergeNode in="offsetBlur"/&gt;&lt;feMergeNode in="SourceGraphic"/&gt;&lt;/feMerge&gt;&lt;/filter&gt;
+</p>
+<p>
+</p>
+<p>
+          &lt;path id="petalShape" d="M0,0 C-25,-50 -20,-90 -5,-120 C-2,-135 2,-135 5,-120 C20,-90 25,-50 0,0 Z"/&gt;
+</p>
+<p>
+        &lt;/defs&gt;
+</p>
+<p>
+</p>
+<p>
+        &lt;g class="flower-root"&gt;
+</p>
+<p>
+          &lt;g class="stem-group"&gt;&lt;path d="M250,550 C250,500 240,400 250,350" stroke="#4a9040" stroke-width="8" fill="none" stroke-linecap="round"/&gt;&lt;/g&gt;
+</p>
+<p>
+          &lt;g class="leaf-left"&gt;&lt;path d="M245,480 C210,460 170,470 150,450 C170,455 210,465 245,475 Z" fill="url(#gradLeaf)"/&gt;&lt;/g&gt;
+</p>
+<p>
+          &lt;g class="leaf-right"&gt;&lt;path d="M255,500 C290,480 330,490 350,470 C330,475 290,485 255,495 Z" fill="url(#gradLeaf)"/&gt;&lt;/g&gt;
+</p>
+<p>
+</p>
+<p>
+          &lt;g class="flower-head"&gt;
+</p>
+<p>
+            &lt;g id="petalsContainer"&gt;
+</p>
+<p>
+              &lt;/g&gt;
+</p>
+<p>
+            &lt;g class="center-group"&gt;
+</p>
+<p>
+              &lt;circle cx="250" cy="350" r="30" fill="url(#gradCenter)" stroke="#b87010" stroke-width="2"/&gt;
+</p>
+<p>
+              &lt;circle cx="250" cy="350" r="25" fill="none" stroke="#fff0a0" stroke-width="0.5" stroke-dasharray="2 3"/&gt;
+</p>
+<p>
+            &lt;/g&gt;
+</p>
+<p>
+          &lt;/g&gt;
+</p>
+<p>
+        &lt;/g&gt;
+</p>
+<p>
+      &lt;/svg&gt;
+</p>
+<p>
+    &lt;/div&gt;
+</p>
+<p>
+    &lt;div class="final-msg" id="final"&gt;
+</p>
+<p>
+      &lt;div class="msg-title"&gt;¡Te amo muchísimo!&lt;/div&gt;
+</p>
+<p>
+      &lt;p class="msg-text"&gt;Cada pétalo era un motivo para amarte, y me sobran razones. Gracias por ser tú, Matecito.&lt;/p&gt;
+</p>
+<p>
+      &lt;button onclick="location.reload()"&gt;Regalar otra flor&lt;/button&gt;
+</p>
+<p>
+    &lt;/div&gt;
+</p>
+<p>
+    &lt;script&gt;
+</p>
+<p>
+      const container = document.getElementById('petalsContainer');
+</p>
+<p>
+      const counter = document.getElementById('counter');
+</p>
+<p>
+      const totalPetals = 20;
+</p>
+<p>
+      let left = totalPetals;
+</p>
+<p>
+      // Generación de pétalos complejos
+</p>
+<p>
+      for (let i = 0; i &lt; totalPetals; i++) {
+</p>
+<p>
+        const angle = i * (360 / totalPetals);
+</p>
+<p>
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+</p>
+<p>
+        g.setAttribute("class", "petal-group");
+</p>
+<p>
+        g.style.animationDelay = (i * 0.08) + 's';
+</p>
+<p>
+</p>
+<p>
+        const fill = (i % 2 === 0) ? "url(#grad1)" : "url(#grad2)";
+</p>
+<p>
+        const scale = 1.3 - (i * 0.01); // Variación sutil de tamaño
+</p>
+<p>
+</p>
+<p>
+        g.innerHTML = `&lt;use href="#petalShape" transform="translate(250,350) rotate(${angle}) translate(0,-18) scale(${scale})" fill="${fill}" filter="url(#petalShadow)"/&gt;`;
+</p>
+<p>
+</p>
+<p>
+        g.onclick = () =&gt; {
+</p>
+<p>
+          if (g.classList.contains('petal-fly')) return;
+</p>
+<p>
+</p>
+<p>
+          const rad = (angle - 90 + (Math.random()-0.5)*20) * (Math.PI / 180);
+</p>
+<p>
+          const power = 250 + Math.random() * 100;
+</p>
+<p>
+          g.style.setProperty('--fx', Math.cos(rad) * power + 'px');
+</p>
+<p>
+          g.style.setProperty('--fy', Math.sin(rad) * power - 100 + 'px'); // Caída parabólica
+</p>
+<p>
+          g.style.setProperty('--fr', ((Math.random()-0.5) * 500) + 'deg');
+</p>
+<p>
+</p>
+<p>
+          g.classList.add('petal-fly');
+</p>
+<p>
+</p>
+<p>
+          left--;
+</p>
+<p>
+          counter.innerText = left;
+</p>
+<p>
+</p>
+<p>
+          if (left === 0) {
+</p>
+<p>
+            setTimeout(() =&gt; document.getElementById('final').classList.add('show'), 1200);
+</p>
+<p>
+          }
+</p>
+<p>
+        };
+</p>
+<p>
+        container.appendChild(g);
+</p>
+<p>
+      }
+</p>
+<p>
+      // Sistema de Partículas (Brillitos de fondo)
+</p>
+<p>
+      const c = document.getElementById('particles'), ctx = c.getContext('2d');
+</p>
+<p>
+      let parts = [];
+</p>
+<p>
+      function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+</p>
+<p>
+      window.onresize = resize; resize();
+</p>
+<p>
+</p>
+<p>
+      for(let i=0; i&lt;60; i++) parts.push({
+</p>
+<p>
+        x: Math.random()*c.width, y: Math.random()*c.height, 
+</p>
+<p>
+        s: Math.random()*2.5 + 0.5, vx: Math.random()-0.5, vy: Math.random()-0.5,
+</p>
+<p>
+        o: Math.random() * 0.7 + 0.1
+</p>
+<p>
+      });
+</p>
+<p>
+</p>
+<p>
+      function anim() {
+</p>
+<p>
+        ctx.clearRect(0,0,c.width,c.height);
+</p>
+<p>
+        parts.forEach(p =&gt; {
+</p>
+<p>
+          p.x+=p.vx * 0.6; p.y+=p.vy * 0.6;
+</p>
+<p>
+          if(p.x&lt;0) p.x=c.width; if(p.x&gt;c.width) p.x=0;
+</p>
+<p>
+          if(p.y&lt;0) p.y=c.height; if(p.y&gt;c.height) p.y=0;
+</p>
+<p>
+          ctx.globalAlpha = p.o;
+</p>
+<p>
+          ctx.fillStyle = (p.s &gt; 2) ? "#fffbe0" : "#ffd8eb";
+</p>
+<p>
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill();
+</p>
+<p>
+        });
+</p>
+<p>
+        ctx.globalAlpha = 1;
+</p>
+<p>
+        requestAnimationFrame(anim);
+</p>
+<p>
+      }
+</p>
+<p>
+      anim();
+</p>
+<p>
+    &lt;/script&gt;
+</p>
+<p>
+    &lt;/body&gt;
+</p>
+<p>
+    &lt;/html&gt;
+</p>
